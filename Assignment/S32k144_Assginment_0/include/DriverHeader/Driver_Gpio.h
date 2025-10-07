@@ -18,6 +18,7 @@ extern "C"
 
 #include "Driver_Common.h"
 #include "S32K144.h" 
+
 typedef GPIO_Type *GPIO_MODULE;
 /**
  * @brief  GPIO Pin
@@ -139,6 +140,10 @@ typedef struct _ARM_DRIVER_GPIO {
   void     (*SetOutput)       (ARM_GPIO_Pin_t pin, uint32_t val);                    ///< Pointer to \ref ARM_GPIO_SetOutput : Set GPIO Output Level.
   uint32_t (*GetInput)        (ARM_GPIO_Pin_t pin);                                  ///< Pointer to \ref ARM_GPIO_GetInput : Get GPIO Input Level.
 } const ARM_DRIVER_GPIO;
+
+extern const ARM_DRIVER_GPIO Driver_GPIO0;
+
+void PORTx_Select(PORT_Type *port_index,GPIO_Type *gpio_index); 
 
 #ifdef  __cplusplus
 }

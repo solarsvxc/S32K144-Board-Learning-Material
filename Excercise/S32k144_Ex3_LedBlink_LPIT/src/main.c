@@ -10,6 +10,7 @@
  */
 #include "S32K144.h"  
 #include "driver_header/driver_nvic.h" 
+#include "driver_header/driver_clock.h" 
 #define BLUE     0
 #define GREEN    16
 #define RED      15
@@ -33,13 +34,16 @@ void WDOG_disable (void)
  * 
  *  
  */
-void lpit0_ch0_init(void)
+void init_LPIT0_CHn0(void)
 {
-    // IP_PCC->PCCn[PCC_LPIT_INDEX]    = PCC_PCCn_PCS(1);
+    /* Enable clock source of SPLL_DIV2_CLK */
+    IP_PCC->PCCn[PCC_LPIT_INDEX]   = PCC_PCCn_PCS(6);
+    /* Enable Clock gating for LPIT PCC */
     IP_PCC->PCCn[PCC_LPIT_INDEX]   |= PCC_PCCn_CGC_MASK;
+
     /* Wait 4 clock cycles. How i know exactly ??! */
-    for (int i = 0; i < 100; i++){}
-    
+    for (int i = 0; i < 100; i++){} 
+    IP_LPIT0->MCR |= LPIT_MCR_M_CEN_MASK;
     /* DBG_EN   = 0: Timer channels stop in Debug mode */
     /* DOZE_EN  = 0: Timer channels are stopped in DOZE mode */
     /* SW_RST   = 0: SW reset does not reset timer channels and registers */
@@ -47,65 +51,16 @@ void lpit0_ch0_init(void)
     /* MODE     = 0: 32-bit Periodic Counter */
     /* CHAIN    = 0: Chainning disable */
     /* TIE1     = 1: Channel 0 Timer Interrupt Enable       */
-    /* TSOT     = 0  Timer Start On Trigger  for Channel 0  */
-    /* TSOI     = 0  Timer Stop On Interrupt for Channel 0  */
-    /* TROT     = 0  Timer Reload On Trigger for Channel 0  Timer will not reload on the selected trigger */
-    /* TRG_SRC  = 0  Trigger Source - Selects external triggers */
-    /* TRG_SEL  = 0  Trigger Select - Timer channel 0 - 3 trigger source is selected */
-    IP_LPIT0->MCR       = LPIT_MCR_M_CEN_MASK;
-    IP_LPIT0->MIER        = LPIT_MIER_TIE0_MASK;
-    
-    uint32_t to_clock_cycles = 40000000; // 40Mhz
-    
-    IP_LPIT0->TMR[0].TVAL = to_clock_cycles;
-
-
+    /* TSOT     = 0: Timer Start On Trigger  for Channel 0  */
+    /* TSOI     = 0: Timer Stop On Interrupt for Channel 0  */
+    /* TROT     = 0: Timer Reload On Trigger for Channel 0  Timer will not reload on the selected trigger */
+    /* TRG_SRC  = 0: Trigger Source - Selects external triggers */
+    /* TRG_SEL  = 0: Trigger Select - Timer channel 0 - 3 trigger source is selected */
+    IP_LPIT0->TMR[0].TVAL = 40000000;
     /* T_EN = 1: Timer channel is enabled */
-    IP_LPIT0 -> TMR[0].TCTRL = LPIT_TMR_TCTRL_T_EN_MASK;
+    IP_LPIT0->TMR[0].TCTRL |= LPIT_TMR_TCTRL_T_EN_MASK;
 }   
 
-/**
- * @brief handler interrupt 
- * 
- */
-void lpit0_handler(void)
-{
-    if((IP_LPIT0->MSR & LPIT_MSR_TIF0_MASK) /* == LPIT_MSR_TIF0_MASK */)
-    {
-        IP_LPIT0->MSR |= LPIT_MSR_TIF0_MASK;
-        count_flag++;
-
-        switch (led_state)
-        {
-        case 0:
-            IP_PTD->PTOR    = (1U<<GREEN);
-            if(count_flag >= 3) 
-            {
-                count_flag = 0;
-                led_state  = 1;
-            }
-            break;
-
-        case 1:
-            IP_PTD->PTOR    = (1U<<RED);
-            if(count_flag >= 3) 
-            {
-                count_flag = 0;
-                led_state  = 2;
-            }
-            break;
-
-        case 2:
-            IP_PTD->PTOR    = (1U<<BLUE);
-            if(count_flag >= 3) 
-            {
-                count_flag = 0;
-                led_state  = 0;
-            }
-            break;
-        }
-    }
-}
 int main(void)
 {
     WDOG_disable();
@@ -120,14 +75,17 @@ int main(void)
     IP_PTD->PDDR                    |= (1U<<GREEN) | (1U<<BLUE) | (1U<<RED);
     IP_PTD->PSOR                    |= (1U<<GREEN) | (1U<<BLUE) | (1U<<RED);
     
-    NVIC_EnableIRQ(LPIT0_Ch0_IRQn);
-    /*0x10 = piority level 0 (highest) .... 0xF0 = piority level 15 (lowest) */
-    NVIC_SetPriority(LPIT0_Ch0_IRQn,0x10);
-    NVIC_ClearPendingIRQ(LPIT0_Ch0_IRQn);
-    
-    lpit0_ch0_init(); // stuck can Break at address "0x608ff610" with no debug information available, or outside of program code.
-    lpit0_handler();
+    init_SOSC_8MHz();
+    init_SPLL_160Mhz();
+    normal_SPLL_run_80MHz();
+    init_LPIT0_CHn0();
 
-
-    while (1){}
+    while (1)
+    {
+        /* code */
+        while (0==(IP_LPIT0->MSR & LPIT_MSR_TIF0_MASK)){}
+        count_flag++;
+        IP_PTD->PTOR |= (1U<<BLUE);
+        IP_LPIT0->MSR |= LPIT_MSR_TIF0_MASK;
+    }
 }

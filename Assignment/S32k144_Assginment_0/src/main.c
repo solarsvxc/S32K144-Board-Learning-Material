@@ -8,25 +8,21 @@
  * @copyright Copyright (c) 2025
  * 
  */
-#include "S32K144.h"
+#include <DriverHeader/Driver_Gpio.h>
 #include "DriverHeader/Driver_Port.h"
+#include "S32K144.h"
 
 #define RED 0
 #define BLUE 16
 #define GREEN 15
 
-
 int main(void)
 {
-    PORTx_PCC_Disable(PCC_PORTD_INDEX);
-    PORTx_PCC_Enable(PCC_PORTD_INDEX);
-
-    PORTx_MuxControl(IP_PORTD,PORT_MUX_GPIO,RED);
-    PORTx_MuxControl(IP_PORTD,PORT_MUX_GPIO,BLUE);
-    PORTx_MuxControl(IP_PORTD,PORT_MUX_GPIO,GREEN);
+    PCC_Disable(PCC_PORTD_INDEX);
+    PCC_Enable(PCC_PORTD_INDEX);
     
-    //TODO: setup gpio,
+    PORTx_Select(IP_PORTD,IP_PTD);
     
-
-
+    Driver_GPIO0.Setup(BLUE,NULL);
+    Driver_GPIO0.SetDirection(BLUE,ARM_GPIO_OUTPUT);
 }

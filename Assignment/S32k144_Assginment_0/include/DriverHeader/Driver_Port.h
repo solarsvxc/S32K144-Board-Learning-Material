@@ -2,7 +2,6 @@
 #define DRIVERHEADER_DRIVER_PORT_H_
 
 #include "S32K144.h" 
-
 typedef enum 
 {
     PORT_MUX_DISABLED = 0,
@@ -15,9 +14,8 @@ typedef enum
     PORT_MUX_ALT7     = 7,
 } Type_PortMux;
 
-void PORTx_MuxControl(PORT_Type *port_module, Type_PortMux mux,uint8_t pin);
-void PORTx_PCC_Enable(uint32_t port_index);
-void PORTx_PCC_Disable(uint32_t port_index);
+void PCC_Enable(uint32_t portx_index);
+void PCC_Disable(uint32_t portx_index);
 
 
 #endif /* DRIVERHEADER_DRIVER_PORT_H_ */

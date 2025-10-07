@@ -12,5 +12,6 @@
 
 void init_SOSC_8MHz(void);
 void init_SPLL_160Mhz(void);
+void normal_SPLL_run_80MHz(void);
 
 #endif /* DRIVER_HEADER_DRIVER_CLOCK_H_ */

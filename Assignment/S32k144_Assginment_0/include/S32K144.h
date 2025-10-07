@@ -7360,13 +7360,13 @@ typedef struct {
   __IO uint32_t MIER;                              /**< Module Interrupt Enable Register, offset: 0x10 */
   __IO uint32_t SETTEN;                            /**< Set Timer Enable Register, offset: 0x14 */
   __O  uint32_t CLRTEN;                            /**< Clear Timer Enable Register, offset: 0x18 */
-  uint8_t RESERVED_0[4];
+   uint8_t RESERVED_0[4];
   struct {                                         /* offset: 0x20, array step: 0x10 */
     __IO uint32_t TVAL;                              /**< Timer Value Register, array offset: 0x20, array step: 0x10 */
     __I  uint32_t CVAL;                              /**< Current Timer Value, array offset: 0x24, array step: 0x10 */
     __IO uint32_t TCTRL;                             /**< Timer Control Register, array offset: 0x28, array step: 0x10 */
-    uint8_t RESERVED_0[4];
-  } TMR[LPIT_TMR_COUNT];
+   uint8_t RESERVED_0[4];
+   } TMR[LPIT_TMR_COUNT];
 } LPIT_Type, *LPIT_MemMapPtr;
 
 /** Number of instances of the LPIT module. */

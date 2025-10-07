@@ -8,11 +8,20 @@
  * @copyright Copyright (c) 2025
  * 
  */
-#include "Driverheader/Driver_GPIO.h" 
-// Pin mapping
+#include <DriverHeader/Driver_Gpio.h>
+#include "Driverheader/Driver_Port.h" 
+
 #define GPIO_MAX_PINS           32U
 #define PIN_IS_AVAILABLE(n)     ((n) < GPIO_MAX_PINS)
 
+
+static PORT_Type *active_port = NULL;
+static GPIO_Type *active_gpio = NULL;
+
+void PORTx_Select(PORT_Type *port_index,GPIO_Type *gpio_index) {
+  active_port = port_index;
+  active_gpio = gpio_index;
+}
 
 /**
  * @brief  Setup GPIO Interface.
@@ -24,14 +33,13 @@
 static int32_t GPIO_Setup (ARM_GPIO_Pin_t pin, ARM_GPIO_SignalEvent_t cb_event) 
 {
   int32_t result = ARM_DRIVER_OK;
-
+  
   if (PIN_IS_AVAILABLE(pin)) 
   {
-    
+      active_port->PCR[pin]  = PORT_PCR_MUX(PORT_MUX_GPIO);
   } else {
     result = ARM_GPIO_ERROR_PIN;
   }
-
   return result;
 }
 
@@ -50,14 +58,10 @@ static int32_t GPIO_SetDirection (ARM_GPIO_Pin_t pin, ARM_GPIO_DIRECTION directi
   {
     switch (direction) {
       case ARM_GPIO_INPUT:
-          
-    /* CODE */
-
+          active_gpio->PDDR  &=~(1U<<pin);
         break;
       case ARM_GPIO_OUTPUT:
-          
-    /* CODE */
-
+          active_gpio->PDDR  |= (1U<<pin);
         break;
       default:
         result = ARM_DRIVER_ERROR_PARAMETER;
@@ -121,18 +125,12 @@ static int32_t GPIO_SetPullResistor (ARM_GPIO_Pin_t pin, ARM_GPIO_PULL_RESISTOR 
     switch (resistor) {
       case ARM_GPIO_PULL_NONE:
           
-    /* CODE */
-
         break;
       case ARM_GPIO_PULL_UP:
           
-    /* CODE */
-
         break;
       case ARM_GPIO_PULL_DOWN:
           
-    /* CODE */
-
         break;
       default:
         result = ARM_DRIVER_ERROR_PARAMETER;
@@ -203,8 +201,6 @@ static void GPIO_SetOutput (ARM_GPIO_Pin_t pin, uint32_t val)
   if (PIN_IS_AVAILABLE(pin)) 
   {
         
-    /* CODE */
-
   }
 }
 
@@ -221,8 +217,6 @@ static uint32_t GPIO_GetInput (ARM_GPIO_Pin_t pin)
   if (PIN_IS_AVAILABLE(pin)) 
   {
     
-    /* CODE */
-
   }
   return val;
 }
