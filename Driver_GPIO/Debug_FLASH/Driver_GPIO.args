@@ -1,6 +1,6 @@
 -T
-"B:/s32workspace/test_asg1/Project_Settings/Linker_Files/S32K144_64_flash.ld"
--Wl,-Map,"test_asg1.map"
+"B:/s32workspace/Driver_GPIO/Project_Settings/Linker_Files/S32K144_64_flash.ld"
+-Wl,-Map,"Driver_GPIO.map"
 -Xlinker
 --gc-sections
 -n

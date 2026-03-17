@@ -1,7 +1,7 @@
 -DCPU_S32K144HFT0VLLT
--I"B:/s32workspace/test_asg1/include"
--I"B:/s32workspace/test_asg1/src/Driver/include"
--I"B:/s32workspace/test_asg1/src/HAL/include"
+-I"B:/s32workspace/Driver_GPIO/include"
+-I"B:/s32workspace/Driver_GPIO/src/Driver/include"
+-I"B:/s32workspace/Driver_GPIO/src/HAL/include"
 -O0
 -g3
 -Wall

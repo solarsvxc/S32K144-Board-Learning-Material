@@ -219,6 +219,7 @@ void HAL_GPIO_Trigger_Event(int pin_number, ARM_GPIO_EVENT_TRIGGER trigger_event
             case ARM_GPIO_TRIGGER_NONE:
                 HAL_Pin_Set(pin_number, &config_event);
                 config_event.port->PCR[config_event.pin_number] &= ~PORT_PCR_IRQC_MASK; /* Disable interrupt */
+                
                 break;
             case ARM_GPIO_TRIGGER_RISING_EDGE:
                 HAL_Pin_Set(pin_number, &config_event);

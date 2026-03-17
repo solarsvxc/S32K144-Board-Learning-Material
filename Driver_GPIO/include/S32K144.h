@@ -9323,52 +9323,80 @@ typedef struct {
  */ /* end of group MCM_Peripheral_Access_Layer */
 
 
-/* ----------------------------------------------------------------------------
-   -- MPU Peripheral Access Layer
-   ---------------------------------------------------------------------------- */
+///* ----------------------------------------------------------------------------
+//   -- MPU Peripheral Access Layer
+//   ---------------------------------------------------------------------------- */
+//
+///*!
+// * @addtogroup MPU_Peripheral_Access_Layer MPU Peripheral Access Layer
+// * @{
+// */
+//
+///** MPU - Size of Registers Arrays */
+//#define MPU_EAR_EDR_COUNT                         4u
+//#define MPU_RGD_COUNT                             8u
+//#define MPU_RGDAAC_COUNT                          8u
+//
+///** MPU - Register Layout Typedef */
+//typedef struct {
+//  __IO uint32_t CESR;                              /**< Control/Error Status Register, offset: 0x0 */
+//  uint8_t RESERVED_0[12];
+//  struct {                                         /* offset: 0x10, array step: 0x8 */
+//    __I  uint32_t EAR;                               /**< Error Address Register, slave port 0..Error Address Register, slave port 3, array offset: 0x10, array step: 0x8 */
+//    __I  uint32_t EDR;                               /**< Error Detail Register, slave port 0..Error Detail Register, slave port 3, array offset: 0x14, array step: 0x8 */
+//  } EAR_EDR[MPU_EAR_EDR_COUNT];
+//  uint8_t RESERVED_1[976];
+//  struct {                                         /* offset: 0x400, array step: 0x10 */
+//    __IO uint32_t WORD0;                             /**< Region Descriptor 0, Word 0..Region Descriptor 7, Word 0, array offset: 0x400, array step: 0x10 */
+//    __IO uint32_t WORD1;                             /**< Region Descriptor 0, Word 1..Region Descriptor 7, Word 1, array offset: 0x404, array step: 0x10 */
+//    __IO uint32_t WORD2;                             /**< Region Descriptor 0, Word 2..Region Descriptor 7, Word 2, array offset: 0x408, array step: 0x10 */
+//    __IO uint32_t WORD3;                             /**< Region Descriptor 0, Word 3..Region Descriptor 7, Word 3, array offset: 0x40C, array step: 0x10 */
+//  } RGD[MPU_RGD_COUNT];
+//  uint8_t RESERVED_2[896];
+//  __IO uint32_t RGDAAC[MPU_RGDAAC_COUNT];          /**< Region Descriptor Alternate Access Control 0..Region Descriptor Alternate Access Control 7, array offset: 0x800, array step: 0x4 */
+//} MPU_Type, *MPU_MemMapPtr;
+//
+///** Number of instances of the MPU module. */
+//#define MPU_INSTANCE_COUNT                       (1u)
+//
+///* MPU - Peripheral instance base addresses */
+///** Peripheral MPU base address */
+//#define IP_MPU_BASE                              (0x4000D000u)
+///** Peripheral MPU base pointer */
+//#define IP_MPU                                   ((MPU_Type *)IP_MPU_BASE)
+///** Array initializer of MPU peripheral base addresses */
+//#define IP_MPU_BASE_ADDRS                        { IP_MPU_BASE }
+///** Array initializer of MPU peripheral base pointers */
+//#define IP_MPU_BASE_PTRS                         { IP_MPU }
 
-/*!
- * @addtogroup MPU_Peripheral_Access_Layer MPU Peripheral Access Layer
- * @{
- */
+#define SYS_MPU_EAR_EDR_COUNT                     4u
+#define SYS_MPU_RGD_COUNT                         8u
+#define SYS_MPU_RGDAAC_COUNT                      8u
 
-/** MPU - Size of Registers Arrays */
-#define MPU_EAR_EDR_COUNT                         4u
-#define MPU_RGD_COUNT                             8u
-#define MPU_RGDAAC_COUNT                          8u
-
-/** MPU - Register Layout Typedef */
 typedef struct {
-  __IO uint32_t CESR;                              /**< Control/Error Status Register, offset: 0x0 */
+  __IO uint32_t CESR;
   uint8_t RESERVED_0[12];
-  struct {                                         /* offset: 0x10, array step: 0x8 */
-    __I  uint32_t EAR;                               /**< Error Address Register, slave port 0..Error Address Register, slave port 3, array offset: 0x10, array step: 0x8 */
-    __I  uint32_t EDR;                               /**< Error Detail Register, slave port 0..Error Detail Register, slave port 3, array offset: 0x14, array step: 0x8 */
-  } EAR_EDR[MPU_EAR_EDR_COUNT];
+  struct {
+    __I  uint32_t EAR;
+    __I  uint32_t EDR;
+  } EAR_EDR[SYS_MPU_EAR_EDR_COUNT];
   uint8_t RESERVED_1[976];
-  struct {                                         /* offset: 0x400, array step: 0x10 */
-    __IO uint32_t WORD0;                             /**< Region Descriptor 0, Word 0..Region Descriptor 7, Word 0, array offset: 0x400, array step: 0x10 */
-    __IO uint32_t WORD1;                             /**< Region Descriptor 0, Word 1..Region Descriptor 7, Word 1, array offset: 0x404, array step: 0x10 */
-    __IO uint32_t WORD2;                             /**< Region Descriptor 0, Word 2..Region Descriptor 7, Word 2, array offset: 0x408, array step: 0x10 */
-    __IO uint32_t WORD3;                             /**< Region Descriptor 0, Word 3..Region Descriptor 7, Word 3, array offset: 0x40C, array step: 0x10 */
-  } RGD[MPU_RGD_COUNT];
+  struct {
+    __IO uint32_t WORD0;
+    __IO uint32_t WORD1;
+    __IO uint32_t WORD2;
+    __IO uint32_t WORD3;
+  } RGD[SYS_MPU_RGD_COUNT];
   uint8_t RESERVED_2[896];
-  __IO uint32_t RGDAAC[MPU_RGDAAC_COUNT];          /**< Region Descriptor Alternate Access Control 0..Region Descriptor Alternate Access Control 7, array offset: 0x800, array step: 0x4 */
-} MPU_Type, *MPU_MemMapPtr;
+  __IO uint32_t RGDAAC[SYS_MPU_RGDAAC_COUNT];
+} SYS_MPU_Type, *SYS_MPU_MemMapPtr;
 
-/** Number of instances of the MPU module. */
-#define MPU_INSTANCE_COUNT                       (1u)
+#define SYS_MPU_INSTANCE_COUNT                    (1u)
 
-/* MPU - Peripheral instance base addresses */
-/** Peripheral MPU base address */
-#define IP_MPU_BASE                              (0x4000D000u)
-/** Peripheral MPU base pointer */
-#define IP_MPU                                   ((MPU_Type *)IP_MPU_BASE)
-/** Array initializer of MPU peripheral base addresses */
-#define IP_MPU_BASE_ADDRS                        { IP_MPU_BASE }
-/** Array initializer of MPU peripheral base pointers */
-#define IP_MPU_BASE_PTRS                         { IP_MPU }
-
+#define SYS_IP_MPU_BASE                           (0x4000D000u)
+#define SYS_IP_MPU                                ((SYS_MPU_Type *)SYS_IP_MPU_BASE)
+#define SYS_IP_MPU_BASE_ADDRS                     { SYS_IP_MPU_BASE }
+#define SYS_IP_MPU_BASE_PTRS                      { SYS_IP_MPU }
 /* ----------------------------------------------------------------------------
    -- MPU Register Masks
    ---------------------------------------------------------------------------- */

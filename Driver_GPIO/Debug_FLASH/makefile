@@ -25,23 +25,23 @@ endif
 
 # Add inputs and outputs from these tool invocations to the build variables 
 SECONDARY_SIZE += \
-test_asg1.siz \
+Driver_GPIO.siz \
 
 
 # All Target
-all: test_asg1.elf secondary-outputs
+all: Driver_GPIO.elf secondary-outputs
 
 # Tool invocations
-test_asg1.elf: $(OBJS) B:/s32workspace/test_asg1/Project_Settings/Linker_Files/S32K144_64_flash.ld $(USER_OBJS)
+Driver_GPIO.elf: $(OBJS) B:/s32workspace/Driver_GPIO/Project_Settings/Linker_Files/S32K144_64_flash.ld $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: Standard S32DS C Linker'
-	arm-none-eabi-gcc -o "test_asg1.elf" "@test_asg1.args"  $(USER_OBJS) $(LIBS)
+	arm-none-eabi-gcc -o "Driver_GPIO.elf" "@Driver_GPIO.args"  $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
-test_asg1.siz: test_asg1.elf
+Driver_GPIO.siz: Driver_GPIO.elf
 	@echo 'Invoking: Standard S32DS Print Size'
-	arm-none-eabi-size --format=berkeley test_asg1.elf
+	arm-none-eabi-size --format=berkeley Driver_GPIO.elf
 	@echo 'Finished building: $@'
 	@echo ' '
 
