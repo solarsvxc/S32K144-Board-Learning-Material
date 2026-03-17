@@ -1,7 +1,0 @@
--c
--I"B:/s32workspace/test_asg1/include"
--x assembler-with-cpp
--DSTART_FROM_FLASH
--g3
--mcpu=cortex-m4
--specs=rdimon.specs
