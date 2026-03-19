@@ -65,8 +65,6 @@ int main(void)
     
     IP_LPIT0->TMR[0].TCTRL |= LPIT_TMR_TCTRL_T_EN_MASK;
 
-    
-    IP_LPIT0->TMR[0].TVAL = 3000;
 
     while (1)
     {
